@@ -69,6 +69,9 @@ public class ElevatorSubsystem extends SubsystemBase {
             .reverseSoftLimit(-50)
             .reverseSoftLimitEnabled(true);
 
+        // Set Motor 2 to follow Motor 1
+        motorConfig2.follow(motor1);    
+
         // Apply the configuration to the SPARK MAX motors.
         motor1.configure(motorConfig1, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
         motor2.configure(motorConfig2, ResetMode.kResetSafeParameters, PersistMode.kNoPersistParameters);
@@ -84,6 +87,10 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void setMotorSpeed(double speed) {
         motor1.set(speed);
         motor2.set(speed);
+    }
+    // Create a public method to get the position of the encoder in a different class
+    public double getEncoder1Position() {
+        return encoder1.getPosition();
     }
 
     @Override
