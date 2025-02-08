@@ -10,6 +10,8 @@ import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -83,17 +85,44 @@ public class RobotContainer {
 
         drivetrain.registerTelemetry(logger::telemeterize);
 
-        driverJoystick.rightTrigger(.1).onTrue(new RunCommand(() -> elevatorSubsystem.setMotorSpeed(driverJoystick.getRightTriggerAxis())));
-        driverJoystick.leftTrigger(.1).onTrue(new RunCommand(() -> elevatorSubsystem.setMotorSpeed(driverJoystick.getLeftTriggerAxis())));
+        //Bind triggers for elevator.
+        operatorJoystick.rightTrigger(.1).onTrue(new RunCommand(() ->
+        {
+            elevatorSubsystem.setMotorSpeed(.1*operatorJoystick.getRightTriggerAxis());
+            SmartDashboard.putNumber("Elevator right trigger", operatorJoystick.getRightTriggerAxis());
+        }))
+        .onFalse(new RunCommand(() -> elevatorSubsystem.setMotorSpeed(0)));
+        operatorJoystick.leftTrigger(.1).onTrue(new RunCommand(() -> 
+        {
+            elevatorSubsystem.setMotorSpeed(-.1*operatorJoystick.getLeftTriggerAxis());
+            SmartDashboard.putNumber("Elevator left trigger", operatorJoystick.getLeftTriggerAxis());
+        }))
+        .onFalse(new RunCommand(() -> elevatorSubsystem.setMotorSpeed(0)));
+        
+        //Bind buttons for the shooter
+        operatorJoystick.leftBumper().whileTrue(new RunCommand(() -> shooter.setShooterSpeed(.1)))
+                                     .whileFalse(new RunCommand(()-> shooter.stopShooter()));
+        operatorJoystick.rightBumper().whileTrue(new RunCommand(() -> shooter.setShooterSpeed(-.1)))
+                                      .whileFalse(new RunCommand(()-> shooter.stopShooter()));
         
         //Bind buttons for the ramp motor
         operatorJoystick.y().whileTrue(new RunCommand(() -> rampSubsystem.setRampSpeed(0.5)))
                             .whileFalse(new RunCommand(() -> rampSubsystem.setRampSpeed(0.0)));
-
+        
+        operatorJoystick.a().whileTrue(new RunCommand(() -> rampSubsystem.setRampSpeed(-0.5)))
+                            .whileFalse(new RunCommand(() -> rampSubsystem.setRampSpeed(0.0)));
+        
+        //Test code for wrist with joystick.
+        operatorJoystick.axisLessThan(XboxController.Axis.kLeftY.value,1.0).whileTrue(new RunCommand(() -> {
+            //run much slower than the input
+            wristSubsystem.setSpeed(0.05*operatorJoystick.getLeftY());
+            SmartDashboard.putNumber("Wrist Joystick Input", operatorJoystick.getLeftY());
+        }));
+        
         // Bind buttons for the wrist subsystem positions
-        operatorJoystick.a().whileTrue(new RunCommand(() -> wristSubsystem.setWristPosition(WristPosition.LOW)));
-        operatorJoystick.b().whileTrue(new RunCommand(() -> wristSubsystem.setWristPosition(WristPosition.MIDDLE)));
-        operatorJoystick.x().whileTrue(new RunCommand(() -> wristSubsystem.setWristPosition(WristPosition.HIGH)));
+        //operatorJoystick.x().whileTrue(new RunCommand(() -> wristSubsystem.setWristPosition(WristPosition.LOW)));
+        //operatorJoystick.a().whileTrue(new RunCommand(() -> wristSubsystem.setWristPosition(WristPosition.MIDDLE)));
+        //operatorJoystick.b().whileTrue(new RunCommand(() -> wristSubsystem.setWristPosition(WristPosition.HIGH)));
 
         // Bind the Xbox controller triggers to control the elevator
          // I think I want the TriggerAxis value, not the boolean

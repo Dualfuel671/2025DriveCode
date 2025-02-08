@@ -16,13 +16,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
 public class Shooter extends SubsystemBase {
-    private final TalonFX shooterMotor = new TalonFX(10);
+    private final TalonFX shooterMotor = new TalonFX(11);
     private final TalonFXConfiguration shooterConfig = new TalonFXConfiguration();
 
     public Shooter() {
         shooterConfig.Slot0.kP = 0.1;
         shooterConfig.Slot0.kI = 0.0;
         shooterConfig.Slot0.kD = 0.0;
+        shooterMotor.getConfigurator().apply(shooterConfig);
         // prolly need a kF value if its a feed forward controller
         //shooterConfig.Slot0.kForward = 0.0;
        // shooterConfig.Slot0.integralZone = 0;
@@ -35,15 +36,13 @@ public class Shooter extends SubsystemBase {
       //  shooterConfig.Slot0.closedLoopRamp = 0;
       //  shooterConfig.Slot0.sensorTerm = TalonFXConfiguration.SensorTerm.SensorTerm_Sum0;
         //shooterConfig.Slot0.filter1 = 0;
-        
-    
-}
-    
-        public void setShooterSpeed(double speed) {
-            shooterMotor.set(speed);
-        }
-    
-        public void stopShooter() {
-            shooterMotor.set(0.0);
-        }
     }
+    
+    public void setShooterSpeed(double speed) {
+        shooterMotor.set(speed);
+    }
+
+    public void stopShooter() {
+        shooterMotor.set(0.0);
+    }
+}

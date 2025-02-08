@@ -85,8 +85,8 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void setMotorSpeed(double speed) {
+        SmartDashboard.putNumber("Elevator Speed",speed );
         motor1.set(speed);
-        motor2.set(speed);
     }
     // Create a public method to get the position of the encoder in a different class
     public double getEncoder1Position() {

@@ -4,6 +4,7 @@ import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class WristSubSystem extends SubsystemBase {
@@ -12,16 +13,16 @@ public class WristSubSystem extends SubsystemBase {
     private final TalonFXConfiguration wristConfig = new TalonFXConfiguration();
     final PositionVoltage m_request = new PositionVoltage(0).withSlot(0);
     public enum WristPosition {//TODO: set these values correctly
-        LOW(0),
-        MIDDLE(10),
-        HIGH(20);
-        private int value;    
+        LOW(5.7),
+        MIDDLE(0.0),
+        HIGH(-9.26);
+        private double value;    
       
-        private WristPosition(int value) {
+        private WristPosition(double value) {
           this.value = value;
         }
       
-        public int getValue() {
+        public double getValue() {
           return value;
         }
     }
@@ -33,6 +34,46 @@ public class WristSubSystem extends SubsystemBase {
     }
 
     public void setWristPosition(WristPosition state) {
-        wristMotor.setControl(m_request.withPosition(state.getValue()));
+        wristMotor.setControl(m_request.withPosition(state.getValue()).withVelocity(.1));
     }
+    //NOTE: this is here for testing purposes primarily
+    public void setSpeed(double speed) {
+        SmartDashboard.putNumber("Wrist Encoder Position", getEncoderPosition());
+        wristMotor.set(speed);
+    }
+    public double getEncoderPosition() {
+        return wristMotor.getPosition().getValueAsDouble();
+    }
+    /*
+    private WristPosition currentWristPosition = WristPosition.LOW;
+    public void wristUp(){
+      switch(currentWristPosition){
+        case LOW:
+          currentWristPosition = WristPosition.MIDDLE;
+          setWristPosition(currentWristPosition);
+          break;
+        case MIDDLE:
+          currentWristPosition = WristPosition.HIGH;
+          setWristPosition(currentWristPosition);
+          break;
+        case HIGH:
+          break;
+
+      }
+    }
+    public void wristDown(){
+      switch(currentWristPosition){
+        case LOW:
+          break;
+        case MIDDLE:
+          currentWristPosition = WristPosition.LOW;
+          setWristPosition(currentWristPosition);
+          break;
+        case HIGH:
+          currentWristPosition = WristPosition.MIDDLE;
+          setWristPosition(currentWristPosition);
+          break;
+
+      }
+    } */
 }
