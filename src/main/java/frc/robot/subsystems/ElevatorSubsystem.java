@@ -12,6 +12,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.LimitSwitchConfig.Type;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ElevatorSubsystem extends SubsystemBase {
@@ -24,7 +25,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     private SparkLimitSwitch forwardLimitSwitch2;
     private SparkLimitSwitch reverseLimitSwitch2;
     private RelativeEncoder encoder1;
-    private RelativeEncoder encoder2;
+    private RelativeEncoder encoder2; 
+    //Make Hall Effect?
+    DigitalInput input = new DigitalInput(1);
 
     public ElevatorSubsystem() {
         // Initialize the SPARK MAX motors and get their limit switch and encoder objects for later use.
@@ -58,7 +61,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             .reverseLimitSwitchEnabled(true);
 
         // Set the soft limits to stop the motors at -50 and 50 rotations
-        motorConfig1.softLimit
+       /*  motorConfig1.softLimit
             .forwardSoftLimit(50)
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimit(-50)
@@ -68,7 +71,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             .forwardSoftLimitEnabled(true)
             .reverseSoftLimit(-50)
             .reverseSoftLimitEnabled(true);
-
+        */
         // Set Motor 2 to follow Motor 1
         motorConfig2.follow(motor1);    
 
@@ -95,6 +98,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        SmartDashboard.putBoolean("Hall Effect", input.get());
         // Display data from SPARK onto the dashboard
         SmartDashboard.putBoolean("Forward Limit Reached Motor 1", forwardLimitSwitch1.isPressed());
         SmartDashboard.putBoolean("Reverse Limit Reached Motor 1", reverseLimitSwitch1.isPressed());
@@ -104,5 +108,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Applied Output Motor 2", motor2.getAppliedOutput());
         SmartDashboard.putNumber("Position Motor 1", encoder1.getPosition());
         SmartDashboard.putNumber("Position Motor 2", encoder2.getPosition());
+        
     }
 }

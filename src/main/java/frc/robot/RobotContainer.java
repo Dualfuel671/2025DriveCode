@@ -86,13 +86,13 @@ public class RobotContainer {
         drivetrain.registerTelemetry(logger::telemeterize);
 
         //Bind triggers for elevator.
-        operatorJoystick.rightTrigger(.1).onTrue(new RunCommand(() ->
+        operatorJoystick.rightTrigger(.1).whileTrue(new RunCommand(() ->
         {
-            elevatorSubsystem.setMotorSpeed(.1*operatorJoystick.getRightTriggerAxis());
+            elevatorSubsystem.setMotorSpeed(.3*operatorJoystick.getRightTriggerAxis());
             SmartDashboard.putNumber("Elevator right trigger", operatorJoystick.getRightTriggerAxis());
         }))
         .onFalse(new RunCommand(() -> elevatorSubsystem.setMotorSpeed(0)));
-        operatorJoystick.leftTrigger(.1).onTrue(new RunCommand(() -> 
+        operatorJoystick.leftTrigger(.1).whileTrue(new RunCommand(() -> 
         {
             elevatorSubsystem.setMotorSpeed(-.1*operatorJoystick.getLeftTriggerAxis());
             SmartDashboard.putNumber("Elevator left trigger", operatorJoystick.getLeftTriggerAxis());
@@ -100,7 +100,7 @@ public class RobotContainer {
         .onFalse(new RunCommand(() -> elevatorSubsystem.setMotorSpeed(0)));
         
         //Bind buttons for the shooter
-        operatorJoystick.leftBumper().whileTrue(new RunCommand(() -> shooter.setShooterSpeed(.1)))
+        operatorJoystick.leftBumper().whileTrue(new RunCommand(() -> shooter.setShooterSpeed(.5)))
                                      .whileFalse(new RunCommand(()-> shooter.stopShooter()));
         operatorJoystick.rightBumper().whileTrue(new RunCommand(() -> shooter.setShooterSpeed(-.1)))
                                       .whileFalse(new RunCommand(()-> shooter.stopShooter()));
@@ -114,7 +114,7 @@ public class RobotContainer {
         
         //Test code for wrist with joystick.
         operatorJoystick.axisLessThan(XboxController.Axis.kLeftY.value,1.0).whileTrue(new RunCommand(() -> {
-            //run much slower than the input
+            //run much slower than the input with "0.05*"
             wristSubsystem.setSpeed(0.05*operatorJoystick.getLeftY());
             SmartDashboard.putNumber("Wrist Joystick Input", operatorJoystick.getLeftY());
         }));
@@ -126,7 +126,8 @@ public class RobotContainer {
 
         // Bind the Xbox controller triggers to control the elevator
          // I think I want the TriggerAxis value, not the boolean
-        /*new Trigger(() -> joystick.getRightTriggerAxis() > 0.1)
+        /* 
+        new Trigger(() -> joystick.getRightTriggerAxis() > 0.1)
             .whileTrue(new RunCommand(() -> elevatorSubsystem.setMotorSpeed(joystick.getRightTriggerAxis()), elevatorSubsystem));
 
         new Trigger(() -> joystick.getLeftTriggerAxis() > 0.1)
