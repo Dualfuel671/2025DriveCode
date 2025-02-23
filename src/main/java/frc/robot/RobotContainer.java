@@ -35,7 +35,7 @@ public class RobotContainer {
 
     /* Setting up bindings for necessary control of the swerve drive platform */
     private final SwerveRequest.FieldCentric drive = new SwerveRequest.FieldCentric()
-            .withDeadband(MaxSpeed * 0.2).withRotationalDeadband(MaxAngularRate * 0.2) // Add a 20% deadband
+            .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
     private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
@@ -56,15 +56,25 @@ public class RobotContainer {
         configureBindings();
     }
 
+    private double squareInput(double input){
+        boolean negative = input  < 0;
+        if (negative){
+            return -Math.pow(input,2);
+        }
+        else{
+            return Math.pow(input,2);
+        }
+    }
+
     private void configureBindings() {
         // Note that X is defined as forward according to WPILib convention,
         // and Y is defined as to the left according to WPILib convention.
         drivetrain.setDefaultCommand(
             // Drivetrain will execute this command periodically
             drivetrain.applyRequest(() ->
-                drive.withVelocityX(-driverJoystick.getLeftY() * MaxSpeed) // Drive forward with negative Y (forward)
-                    .withVelocityY(-driverJoystick.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                    .withRotationalRate(-driverJoystick.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
+                drive.withVelocityX(-.5*squareInput(driverJoystick.getLeftY()) * MaxSpeed) // Drive forward with negative Y (forward)
+                    .withVelocityY(-.5*squareInput(driverJoystick.getLeftX()) * MaxSpeed) // Drive left with negative X (left)
+                    .withRotationalRate(-.4*squareInput(driverJoystick.getRightX()) * MaxAngularRate) // Drive counterclockwise with negative X (left)
             )
         );
 
@@ -88,34 +98,34 @@ public class RobotContainer {
         //Bind triggers for elevator.
         operatorJoystick.rightTrigger(.1).whileTrue(new RunCommand(() ->
         {
-            elevatorSubsystem.setMotorSpeed(.3*operatorJoystick.getRightTriggerAxis());
+            elevatorSubsystem.setMotorSpeed(.1*operatorJoystick.getRightTriggerAxis());
             SmartDashboard.putNumber("Elevator right trigger", operatorJoystick.getRightTriggerAxis());
         }))
         .onFalse(new RunCommand(() -> elevatorSubsystem.setMotorSpeed(0)));
         operatorJoystick.leftTrigger(.1).whileTrue(new RunCommand(() -> 
         {
-            elevatorSubsystem.setMotorSpeed(-.1*operatorJoystick.getLeftTriggerAxis());
+            elevatorSubsystem.setMotorSpeed(-.4*operatorJoystick.getLeftTriggerAxis());
             SmartDashboard.putNumber("Elevator left trigger", operatorJoystick.getLeftTriggerAxis());
         }))
         .onFalse(new RunCommand(() -> elevatorSubsystem.setMotorSpeed(0)));
         
         //Bind buttons for the shooter
-        operatorJoystick.leftBumper().whileTrue(new RunCommand(() -> shooter.setShooterSpeed(.5)))
+        operatorJoystick.leftBumper().whileTrue(new RunCommand(() -> shooter.setShooterSpeed(.4)))
                                      .whileFalse(new RunCommand(()-> shooter.stopShooter()));
-        operatorJoystick.rightBumper().whileTrue(new RunCommand(() -> shooter.setShooterSpeed(-.1)))
+        operatorJoystick.rightBumper().whileTrue(new RunCommand(() -> shooter.setShooterSpeed(-.4)))
                                       .whileFalse(new RunCommand(()-> shooter.stopShooter()));
         
         //Bind buttons for the ramp motor
-        operatorJoystick.y().whileTrue(new RunCommand(() -> rampSubsystem.setRampSpeed(0.5)))
+        operatorJoystick.y().whileTrue(new RunCommand(() -> rampSubsystem.setRampSpeed(0.2)))
                             .whileFalse(new RunCommand(() -> rampSubsystem.setRampSpeed(0.0)));
         
-        operatorJoystick.a().whileTrue(new RunCommand(() -> rampSubsystem.setRampSpeed(-0.5)))
+        operatorJoystick.a().whileTrue(new RunCommand(() -> rampSubsystem.setRampSpeed(-0.2)))
                             .whileFalse(new RunCommand(() -> rampSubsystem.setRampSpeed(0.0)));
         
         //Test code for wrist with joystick.
         operatorJoystick.axisLessThan(XboxController.Axis.kLeftY.value,1.0).whileTrue(new RunCommand(() -> {
             //run much slower than the input with "0.05*"
-            wristSubsystem.setSpeed(0.05*operatorJoystick.getLeftY());
+            wristSubsystem.setSpeed(0.1*operatorJoystick.getLeftY());
             SmartDashboard.putNumber("Wrist Joystick Input", operatorJoystick.getLeftY());
         }));
         

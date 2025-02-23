@@ -13,7 +13,7 @@ public class WristSubSystem extends SubsystemBase {
     private final TalonFXConfiguration wristConfig = new TalonFXConfiguration();
     final PositionVoltage m_request = new PositionVoltage(0).withSlot(0);
     public enum WristPosition {//TODO: set these values correctly
-        LOW(5.7),
+        LOW(5.7), //encoder position 0 is park, 14 is algae
         MIDDLE(0.0),
         HIGH(-9.26);
         private double value;    

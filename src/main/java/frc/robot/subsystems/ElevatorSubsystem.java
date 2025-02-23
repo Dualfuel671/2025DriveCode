@@ -27,7 +27,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private RelativeEncoder encoder1;
     private RelativeEncoder encoder2; 
     //Make Hall Effect?
-    DigitalInput input = new DigitalInput(1);
+    DigitalInput input = new DigitalInput(4);
 
     public ElevatorSubsystem() {
         // Initialize the SPARK MAX motors and get their limit switch and encoder objects for later use.
@@ -98,7 +98,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        SmartDashboard.putBoolean("Hall Effect", input.get());
+        SmartDashboard.putBoolean("Hall Effect Sensor", input.get());
         // Display data from SPARK onto the dashboard
         SmartDashboard.putBoolean("Forward Limit Reached Motor 1", forwardLimitSwitch1.isPressed());
         SmartDashboard.putBoolean("Reverse Limit Reached Motor 1", reverseLimitSwitch1.isPressed());
