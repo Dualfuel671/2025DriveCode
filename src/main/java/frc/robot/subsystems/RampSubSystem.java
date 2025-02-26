@@ -6,23 +6,16 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj.DigitalInput;
-<<<<<<< HEAD
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-=======
-// need beam break 
->>>>>>> 2affb3831071b2c03e9c4128468fb62bdca91dda
 
 
 
 public class RampSubSystem extends SubsystemBase {
     private final TalonFX rampMotor = new TalonFX(10);//TODO: update with correct value
     private final TalonFXConfiguration rampConfig = new TalonFXConfiguration();
-<<<<<<< HEAD
     DigitalInput RampBeans = new DigitalInput(2);
-=======
->>>>>>> 2affb3831071b2c03e9c4128468fb62bdca91dda
 
     public RampSubSystem() {
         rampConfig.Slot0.kP = 0.1;
@@ -54,7 +47,6 @@ public class RampSubSystem extends SubsystemBase {
     public void stopRamp() {
         rampMotor.set(0.0);
     }
-<<<<<<< HEAD
 
     //Method to get value of ramp beans
     public boolean RampBeans() {
@@ -66,6 +58,4 @@ public class RampSubSystem extends SubsystemBase {
     public void periodic() {
         SmartDashboard.putBoolean("Ramp beans" , RampBeans());
     }
-=======
->>>>>>> 2affb3831071b2c03e9c4128468fb62bdca91dda
 }

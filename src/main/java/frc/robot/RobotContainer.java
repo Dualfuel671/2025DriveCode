@@ -14,27 +14,11 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-<<<<<<< HEAD
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.commands.IntakeAlgae;
-import frc.robot.commands.AdvToShooter;
-import frc.robot.commands.StartShooterWheel;
-import frc.robot.commands.StopShooterWheel;
-import frc.robot.commands.StartRampWheel;
-import frc.robot.commands.StopRampWheel;
-=======
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 
->>>>>>> 2affb3831071b2c03e9c4128468fb62bdca91dda
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -44,10 +28,6 @@ import frc.robot.subsystems.WristSubSystem;
 import frc.robot.subsystems.WristSubSystem.WristPosition;
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 2affb3831071b2c03e9c4128468fb62bdca91dda
 public class RobotContainer {
     private double MaxSpeed = TunerConstants.kSpeedAt12Volts.in(MetersPerSecond); // kSpeedAt12Volts desired top speed
     private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
@@ -133,26 +113,6 @@ public class RobotContainer {
                                      .whileFalse(new RunCommand(()-> shooter.stopShooter()));
         operatorJoystick.rightBumper().whileTrue(new RunCommand(() -> shooter.setShooterSpeed(-.4)))
                                       .whileFalse(new RunCommand(()-> shooter.stopShooter()));
-<<<<<<< HEAD
-
-        //button to advance coral to shooter
-        operatorJoystick.x().onTrue(
-            new SequentialCommandGroup(
-                new ParallelCommandGroup(
-                    new AdvToShooter(shooter),
-                    new StartRampWheel(rampSubsystem)),
-                new ParallelCommandGroup(
-                    new StartShooterWheel(shooter),
-                    new StopRampWheel(rampSubsystem)),
-                new WaitCommand(.1),
-                new StopShooterWheel(shooter)));
-
-        //intake algae (Spin Shooter wheels until Llimit switch hit) TODO: add necessary wrist and elvator movements
-        operatorJoystick.b().onTrue(
-            new SequentialCommandGroup(
-                new IntakeAlgae(shooter)));
-=======
->>>>>>> 2affb3831071b2c03e9c4128468fb62bdca91dda
         
         //Bind buttons for the ramp motor
         operatorJoystick.y().whileTrue(new RunCommand(() -> rampSubsystem.setRampSpeed(0.2)))
@@ -182,10 +142,6 @@ public class RobotContainer {
         new Trigger(() -> joystick.getLeftTriggerAxis() > 0.1)
             .whileTrue(new RunCommand(() -> elevatorSubsystem.setMotorSpeed(-joystick.getLeftTriggerAxis()), elevatorSubsystem));
         */
-<<<<<<< HEAD
-
-=======
->>>>>>> 2affb3831071b2c03e9c4128468fb62bdca91dda
     }
 
     public Command getAutonomousCommand() {

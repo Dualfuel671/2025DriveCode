@@ -25,7 +25,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     private SparkLimitSwitch forwardLimitSwitch2;
     private SparkLimitSwitch reverseLimitSwitch2;
     private RelativeEncoder encoder1;
-    private RelativeEncoder encoder2; 
+    private RelativeEncoder encoder2;
+    private DigitalInput upperLimitSwitch;
+    private DigitalInput lowerLimitSwitch; 
     //Make Hall Effect?
     DigitalInput input = new DigitalInput(4);
 
@@ -39,6 +41,9 @@ public class ElevatorSubsystem extends SubsystemBase {
         reverseLimitSwitch2 = motor2.getReverseLimitSwitch();
         encoder1 = motor1.getEncoder();
         encoder2 = motor2.getEncoder();
+
+        upperLimitSwitch = new DigitalInput(8);
+        lowerLimitSwitch = new DigitalInput(9);
 
         // Create new SPARK MAX configuration objects.
         motorConfig1 = new SparkMaxConfig();
@@ -85,6 +90,24 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         // Initialize dashboard values
         SmartDashboard.setDefaultBoolean("Direction", true);
+    }
+
+    public void moveUp() {
+        // If the upper limit switch is not pressed, move the elevator up
+        if (!upperLimitSwitch.get()) {
+            setMotorSpeed(0.5);
+        } else {
+            setMotorSpeed(0);
+        }
+    }
+    
+    public void moveDown() {
+        // If the lower limit switch is not pressed, move the elevator down
+        if (!lowerLimitSwitch.get()) {
+            setMotorSpeed(-0.5);
+        } else {
+            setMotorSpeed(0);
+        }
     }
 
     public void setMotorSpeed(double speed) {

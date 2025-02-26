@@ -10,15 +10,11 @@ import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.PositionTorqueCurrentFOC;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
-<<<<<<< HEAD
 import edu.wpi.first.wpilibj.DigitalInput;
-=======
->>>>>>> 2affb3831071b2c03e9c4128468fb62bdca91dda
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 
-<<<<<<< HEAD
 public class Shooter extends SubsystemBase {
     private final TalonFX shooterMotor = new TalonFX(11);
     private final TalonFXConfiguration shooterConfig = new TalonFXConfiguration();
@@ -29,14 +25,6 @@ public class Shooter extends SubsystemBase {
 
     public Shooter() {
 
-=======
-
-public class Shooter extends SubsystemBase {
-    private final TalonFX shooterMotor = new TalonFX(11);
-    private final TalonFXConfiguration shooterConfig = new TalonFXConfiguration();
-
-    public Shooter() {
->>>>>>> 2affb3831071b2c03e9c4128468fb62bdca91dda
         shooterConfig.Slot0.kP = 0.1;
         shooterConfig.Slot0.kI = 0.0;
         shooterConfig.Slot0.kD = 0.0;
@@ -62,7 +50,6 @@ public class Shooter extends SubsystemBase {
     public void stopShooter() {
         shooterMotor.set(0.0);
     }
-<<<<<<< HEAD
 
     //tells us when shooter bean is tripped
     public boolean isCoralPresent() {
@@ -80,6 +67,4 @@ public class Shooter extends SubsystemBase {
         SmartDashboard.putBoolean("is coral in shooter" , isCoralPresent());
         SmartDashboard.putBoolean("is Algae in shooter" , isAlgaePresent());
     }
-=======
->>>>>>> 2affb3831071b2c03e9c4128468fb62bdca91dda
 }
